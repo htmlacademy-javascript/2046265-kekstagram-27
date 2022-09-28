@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Вадим Амиров](https://up.htmlacademy.ru/javascript/27/user/2046265).
-* Наставник: `Неизвестно`.
+* Наставник: [Максим Прусаков] (https://htmlacademy.ru/profile/hikikomori).
 
 ---
 
