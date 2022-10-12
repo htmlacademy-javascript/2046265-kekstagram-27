@@ -8,7 +8,7 @@ const LikesCount = {
 
 const COMMENT_LENGTH = (0, 15);
 
-const commentLines = [
+const COMMENT_LINES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -17,7 +17,7 @@ const commentLines = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-const descriptions = [
+const DESCRIPTIONS = [
   'Как притно вернуться в родной город. #дом #семья',
   'Кто последний, тот ..',
   'Что за райское место. #океан #остров',
@@ -30,7 +30,7 @@ const descriptions = [
   'Ты, я и закат #love #sunset',
 ];
 
-const names = ['Андрей','Кирилл','Александр','Алексей','Михаил','Сергей','Руслан','Рустам'];
+const NAMES = ['Андрей','Кирилл','Александр','Алексей','Михаил','Сергей','Руслан','Рустам'];
 
 const getRandomInRange = (min, max) => {
   const minRounded = Math.ceil(min);
@@ -51,20 +51,20 @@ const getRandomArrayElement = (array) =>
 
 const createMessage = () =>
   Array.from({ length: getRandomInRange(1, 2) }, () =>
-    getRandomArrayElement(commentLines)
+    getRandomArrayElement(COMMENT_LINES)
   ).join(' ');
 
 const createComment = (id) => ({
   id,
   avatar: `img/avatar-${getRandomInRange(1, AVATARS_COUNT)}.svg`,
   message: createMessage,
-  name: getRandomArrayElement(names),
+  name: getRandomArrayElement(NAMES),
 });
 
 const createPicture = (id) => ({
   id,
   url: `photos/${id}.jpg`,
-  description: getRandomArrayElement(descriptions),
+  description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomInRange(LikesCount.MIN, LikesCount.MAX),
   comments: Array.from(
     { length: getRandomInRange(COMMENT_LENGTH) },
