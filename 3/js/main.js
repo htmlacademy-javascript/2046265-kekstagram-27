@@ -1,4 +1,14 @@
-const commentLines = [
+const PICTURES_COUNT = 25;
+const AVATARS_COUNT = 6;
+
+const LikesCount = {
+  MIN: 15,
+  MAX: 200,
+};
+
+const COMMENT_LENGTH = (0, 15);
+
+const COMMENT_LINES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -7,7 +17,7 @@ const commentLines = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-const descriptions = [
+const DESCRIPTIONS = [
   'Как притно вернуться в родной город. #дом #семья',
   'Кто последний, тот ..',
   'Что за райское место. #океан #остров',
@@ -20,15 +30,7 @@ const descriptions = [
   'Ты, я и закат #love #sunset',
 ];
 
-const names = ['Андрей','Кирилл','Александр','Алексей','Михаил','Сергей','Руслан','Рустам'];
-
-const PICTURES_COUNT = 25;
-const AVATARS_COUNT = 6;
-
-const LikesCount = {
-  MIN: 15,
-  MAX: 200,
-};
+const NAMES = ['Андрей','Кирилл','Александр','Алексей','Михаил','Сергей','Руслан','Рустам'];
 
 const getRandomInRange = (min, max) => {
   const minRounded = Math.ceil(min);
@@ -42,30 +44,30 @@ getRandomInRange();
 
 const checkStringLength = (string, length) => string.length <= length;
 
-checkStringLength();
+checkStringLength('', 140);
 
 const getRandomArrayElement = (array) =>
   array[getRandomInRange(0, array.length - 1)];
 
 const createMessage = () =>
   Array.from({ length: getRandomInRange(1, 2) }, () =>
-    getRandomArrayElement(commentLines)
+    getRandomArrayElement(COMMENT_LINES)
   ).join(' ');
 
-const createComment = (index) => ({
-  id: index,
+const createComment = (id) => ({
+  id,
   avatar: `img/avatar-${getRandomInRange(1, AVATARS_COUNT)}.svg`,
   message: createMessage,
-  name: getRandomArrayElement(names),
+  name: getRandomArrayElement(NAMES),
 });
 
-const createPicture = (index) => ({
-  id: index,
-  url: `photos/${index}.jpg`,
-  description: getRandomArrayElement(descriptions),
+const createPicture = (id) => ({
+  id,
+  url: `photos/${id}.jpg`,
+  description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomInRange(LikesCount.MIN, LikesCount.MAX),
   comments: Array.from(
-    { length: getRandomInRange(0, 15) },
+    { length: getRandomInRange(COMMENT_LENGTH) },
     (_, commentIndex) => createComment(commentIndex + 1)
   ),
 });
@@ -75,6 +77,4 @@ const getPictures = () =>
     createPicture(pictureIndex + 1)
   );
 
-
-checkStringLength('', 140);
 getPictures();
