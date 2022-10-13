@@ -1,5 +1,4 @@
-import {getRandomInRange} from './util.js';
-import {getRandomArrayElement} from './util.js';
+import {getRandomInRange, getRandomArrayElement} from './util.js';
 
 const PICTURES_COUNT = 25;
 const AVATARS_COUNT = 6;
@@ -63,4 +62,4 @@ const getPictures = () =>
     createPicture(pictureIndex + 1)
   );
 
-getPictures();
+export {getPictures};
