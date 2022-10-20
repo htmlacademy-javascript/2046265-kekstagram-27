@@ -1,3 +1,2 @@
-import {getPictures} from './data.js';
-
-getPictures();
+import './data.js';
+import './thumbnail.js';
