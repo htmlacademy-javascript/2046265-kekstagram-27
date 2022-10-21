@@ -15,5 +15,4 @@ checkStringLength('', 140);
 const getRandomArrayElement = (array) =>
   array[getRandomInRange(0, array.length - 1)];
 
-export {getRandomInRange, getRandomArrayElement};
-
+export {getRandomInRange, checkStringLength, getRandomArrayElement};
