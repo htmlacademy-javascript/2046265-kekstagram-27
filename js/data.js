@@ -8,7 +8,7 @@ const LikesCount = {
   MAX: 200,
 };
 
-const COMMENT_LENGTH = (0, 15);
+const COMMENT_LENGTH = 15;
 
 const COMMENT_LINES = [
   'Всё отлично!',
@@ -52,7 +52,7 @@ const createPicture = (id) => ({
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomInRange(LikesCount.MIN, LikesCount.MAX),
   comments: Array.from(
-    { length: getRandomInRange(COMMENT_LENGTH) },
+    { length: getRandomInRange(0, COMMENT_LENGTH) },
     (_, commentIndex) => createComment(commentIndex + 1)
   ),
 });
