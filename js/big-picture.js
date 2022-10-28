@@ -1,12 +1,12 @@
 const bigPicture = document.querySelector('.big-picture');
 const commentList = document.querySelector('.social__comments');
 const commentItem = commentList.querySelector('.social__comment').cloneNode(true);
-const commentCount = document.querySelector('.social__comment-count');
+const socialCommentCount = document.querySelector('.social__comment-count');
 const commentsLoader = document.querySelector('.comments-loader');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
 const likesCount = bigPicture.querySelector('.likes-count');
 const socialCaption = bigPicture.querySelector('.social__caption');
-const count = bigPicture.querySelector('.comments-count');
+const commentsCount = bigPicture.querySelector('.comments-count');
 const bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
 const body = document.querySelector('body');
 
@@ -35,12 +35,12 @@ const showBigPicture = ({url, likes, description, comments}) => {
   bigPicture.classList.remove('hidden');
   body.classList.add('modal-open');
   commentsLoader.classList.add('hidden');
-  commentCount.classList.add('hidden');
+  socialCommentCount.classList.add('hidden');
   bigPictureImg.src = url;
   bigPictureImg.alt = description;
   likesCount.textContent = likes;
   socialCaption.textContent = description;
-  count.textContent = comments.length;
+  commentsCount.textContent = comments.length;
   bigPictureCancel.addEventListener('click', () => {
     body.classList.remove('modal-open');
     bigPicture.classList.add('hidden');
