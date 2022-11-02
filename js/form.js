@@ -15,6 +15,20 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__field-wrapper__error',
 });
 
+const checkStringLength = (string) => string.length <= 140;
+
+pristine.addValidator(
+  commentField,
+  checkStringLength,
+  'Не более 140 символов'
+);
+
+form.addEventListener('submit', (evt) => {
+  if (!pristine.validate()) {
+    evt.preventDefault();
+  }
+});
+
 const showModal = () => {
   overlay.classList.remove('hidden');
   body.classList.add('modal-open');
