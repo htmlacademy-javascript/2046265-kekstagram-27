@@ -1,2 +1,3 @@
-import './thumbnail.js';
+import './picture.js';
 import './form.js';
+import './scale.js';
