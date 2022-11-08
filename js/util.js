@@ -8,11 +8,7 @@ const getRandomInRange = (min, max) => {
 
 getRandomInRange();
 
-const checkStringLength = (string, length) => string.length <= length;
-
-checkStringLength('', 140);
-
 const getRandomArrayElement = (array) =>
   array[getRandomInRange(0, array.length - 1)];
 
-export {getRandomInRange, checkStringLength, getRandomArrayElement};
+export {getRandomInRange, getRandomArrayElement};

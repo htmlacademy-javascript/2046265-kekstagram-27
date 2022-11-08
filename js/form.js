@@ -1,5 +1,5 @@
-import { resetEffects } from './effect';
-import { resetScale } from './scale';
+import { resetScale } from './scale.js';
+import { resetEffects } from './effect.js';
 
 const form = document.querySelector('.img-upload__form');
 const overlay = document.querySelector('.img-upload__overlay');
@@ -16,20 +16,6 @@ const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper__error',
-});
-
-const checkStringLength = (string) => string.length <= 140;
-
-pristine.addValidator(
-  commentField,
-  checkStringLength,
-  'Не более 140 символов'
-);
-
-form.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
-    evt.preventDefault();
-  }
 });
 
 const showModal = () => {
@@ -94,6 +80,20 @@ const onFormSubmit = (evt) => {
   evt.preventDefault();
   pristine.validate();
 };
+
+const checkStringLength = (string) => string.length <= 140;
+
+pristine.addValidator(
+  commentField,
+  checkStringLength,
+  'Не более 140 символов'
+);
+
+form.addEventListener('submit', (evt) => {
+  if (!pristine.validate()) {
+    evt.preventDefault();
+  }
+});
 
 fileField.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);

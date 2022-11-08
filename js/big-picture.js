@@ -9,7 +9,6 @@ const socialCaption = bigPicture.querySelector('.social__caption');
 const commentsCount = bigPicture.querySelector('.comments-count');
 const bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
 const body = document.querySelector('body');
-const COMMENTS_STEP = 5;
 
 const createComment = ({avatar, name, message}) => {
   const commentElement = commentItem.cloneNode(true);
@@ -36,8 +35,8 @@ const renderComments = (comments) => {
 const showBigPicture = ({url, likes, description, comments}) => {
   bigPicture.classList.remove('hidden');
   body.classList.add('modal-open');
-  /* commentsLoader.classList.add('hidden');
-  socialCommentCount.classList.add('hidden'); */
+  commentsLoader.classList.add('hidden');
+  socialCommentCount.classList.add('hidden');
   bigPictureImg.src = url;
   bigPictureImg.alt = description;
   likesCount.textContent = likes;
@@ -60,4 +59,4 @@ document.addEventListener('keydown', (evt) => {
   }
 });
 
-export {showBigPicture};
+export { showBigPicture };
