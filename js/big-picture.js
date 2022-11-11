@@ -1,8 +1,7 @@
 import {getEscapeEvent} from './util.js';
 
 const bigPicture = document.querySelector('.big-picture');
-const commentList = document.querySelector('.social__comments');
-const commentItem = commentList.querySelector('.social__comment').cloneNode(true);
+const bigPictureImg = document.querySelector('.big-picture__img');
 const socialCommentCount = document.querySelector('.social__comment-count');
 const body = document.body;
 const commentsList = document.querySelector('.social__comments');
@@ -25,17 +24,14 @@ const getBigPictureComment = (comment) => {
   return commentItem;
 };
 
-const renderComments = (comments) => {
-  commentList.innerHTML = '';
-
+const createCommentsFragment = (commentsArray) => {
   const fragment = document.createDocumentFragment();
   commentsArray.forEach((comment) => {
     const patternComment = getBigPictureComment(comment);
     fragment.appendChild(patternComment);
   });
-  commentList.append(fragment);
+  commentsList.appendChild(fragment);
 };
-
 
 const showBigPicture = ({url, likes, description, comments}) => {
   body.classList.add('modal-open');
@@ -61,11 +57,19 @@ const showBigPicture = ({url, likes, description, comments}) => {
   }
 };
 
-document.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    body.classList.remove('modal-open');
-    bigPicture.classList.add('hidden');
+const getCurentCommentCount = (comments) => comments ? comments.children.length : 0;
+
+function onCommentsLoaderClick () {
+  createCommentsFragment(commentsArrayData.slice(commentsCounter, commentsCounter += COMMENTS_STEP));
+  if (commentsCounter >= commentsArrayData.length) {
+    commentsLoader.classList.add('hidden');
+    commentsLoader.removeEventListener('click', onCommentsLoaderClick);
+    commentsCounter = COMMENTS_STEP;
+  }
+  socialCommentCount.firstChild.textContent = `${getCurentCommentCount(commentsList)} из `;
+  if (commentsArrayData.length === 0) {
+    commentsLoader.classList.add('hidden');
+    commentsLoader.removeEventListener('click', onCommentsLoaderClick);
   }
 }
 
@@ -84,4 +88,4 @@ function onBigPictureCancelClick () {
   closeBigPicture();
 }
 
-export { showBigPicture };
+export {showBigPicture};
