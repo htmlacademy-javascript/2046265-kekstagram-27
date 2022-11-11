@@ -42,7 +42,7 @@ const showBigPicture = ({url, likes, description, comments}) => {
   socialCaption.textContent = description;
   bigPicture.classList.remove('hidden');
   document.addEventListener('keydown', onDocumentKeydown);
-  bigPictureCancel.addEventListener('click', onBigPictureCloseClick);
+  bigPictureCancel.addEventListener('click', onBigPictureCancelClick);
   socialCommentCount.firstChild.textContent = `${COMMENTS_STEP} из `;
   commentsArrayData = comments.slice();
   if (commentsArrayData.length <= COMMENTS_STEP) {
@@ -77,14 +77,14 @@ const closeBigPicture = () => {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
-  bigPictureCancel.removeEventListener('click', onBigPictureCloseClick);
+  bigPictureCancel.removeEventListener('click', onBigPictureCancelClick);
 };
 
 function onDocumentKeydown (evt) {
   getEscapeEvent(evt, closeBigPicture);
 }
 
-function onBigPictureCloseClick () {
+function onBigPictureCancelClick () {
   closeBigPicture();
 }
 
