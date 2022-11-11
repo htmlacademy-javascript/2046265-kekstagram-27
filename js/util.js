@@ -8,12 +8,7 @@ const getRandomInRange = (min, max) => {
 
 getRandomInRange();
 
-<<<<<<< HEAD
-const getRandomArrayElement = (array) =>
-  array[getRandomInRange(0, array.length - 1)];
 
-export {getRandomInRange, getRandomArrayElement};
-=======
 const getEscapeEvent = (evt, action) => {
   if (evt.key === 'Escape') {
     action();
@@ -28,4 +23,4 @@ const getRandomArrayElement = (array) =>
   array[getRandomInRange(0, array.length - 1)];
 
 export {getRandomInRange, getEscapeEvent, getRandomArrayElement};
->>>>>>> fe8f099d90059c0afbf4c8d763c4bc0f45823af5
+
