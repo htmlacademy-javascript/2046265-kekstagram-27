@@ -41,7 +41,7 @@ const showBigPicture = ({url, likes, description, comments}) => {
   commentsCount.textContent = comments.length;
   socialCaption.textContent = description;
   bigPicture.classList.remove('hidden');
-  document.addEventListener('keydown', onDocumentEscPress);
+  document.addEventListener('keydown', onDocumentKeydown);
   bigPictureCancel.addEventListener('click', onBigPictureCloseClick);
   socialCommentCount.firstChild.textContent = `${COMMENTS_STEP} из `;
   commentsArrayData = comments.slice();
@@ -76,11 +76,11 @@ function onCommentsLoaderClick () {
 const closeBigPicture = () => {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onDocumentEscPress);
+  document.removeEventListener('keydown', onDocumentKeydown);
   bigPictureCancel.removeEventListener('click', onBigPictureCloseClick);
 };
 
-function onDocumentEscPress (evt) {
+function onDocumentKeydown (evt) {
   getEscapeEvent(evt, closeBigPicture);
 }
 
