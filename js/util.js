@@ -8,6 +8,12 @@ const getRandomInRange = (min, max) => {
 
 getRandomInRange();
 
+const getEscapeEvent = (evt, action) => {
+  if (evt.key === 'Escape') {
+    action();
+  }
+};
+
 const checkStringLength = (string, length) => string.length <= length;
 
 checkStringLength('', 140);
@@ -15,4 +21,4 @@ checkStringLength('', 140);
 const getRandomArrayElement = (array) =>
   array[getRandomInRange(0, array.length - 1)];
 
-export {getRandomInRange, checkStringLength, getRandomArrayElement};
+export {getRandomInRange, getEscapeEvent, getRandomArrayElement};
