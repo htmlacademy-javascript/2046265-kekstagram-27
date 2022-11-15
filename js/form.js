@@ -1,3 +1,6 @@
+import { resetScale } from './scale.js';
+import { resetEffects } from './effect.js';
+
 const form = document.querySelector('.img-upload__form');
 const overlay = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
@@ -15,20 +18,6 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__field-wrapper__error',
 });
 
-const checkStringLength = (string) => string.length <= 140;
-
-pristine.addValidator(
-  commentField,
-  checkStringLength,
-  'Не более 140 символов'
-);
-
-form.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
-    evt.preventDefault();
-  }
-});
-
 const showModal = () => {
   overlay.classList.remove('hidden');
   body.classList.add('modal-open');
@@ -37,6 +26,8 @@ const showModal = () => {
 
 const hideModal = () => {
   form.reset();
+  resetScale();
+  resetEffects();
   pristine.reset();
   overlay.classList.add('hidden');
   body.classList.remove('modal-open');
@@ -89,6 +80,20 @@ const onFormSubmit = (evt) => {
   evt.preventDefault();
   pristine.validate();
 };
+
+const checkStringLength = (string) => string.length <= 140;
+
+pristine.addValidator(
+  commentField,
+  checkStringLength,
+  'Не более 140 символов'
+);
+
+form.addEventListener('submit', (evt) => {
+  if (!pristine.validate()) {
+    evt.preventDefault();
+  }
+});
 
 fileField.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
