@@ -48,8 +48,9 @@ const EFFECTS = {
 const DEFAULT_EFFECT = EFFECTS.none;
 let chosenEffect = DEFAULT_EFFECT;
 
+const { max, min, step, } = chosenEffect;
 const isDefault = () => chosenEffect === DEFAULT_EFFECT;
-const { max, min, step } = chosenEffect;
+
 
 const updateSlider = () => {
   sliderElement.classList.remove('hidden');
