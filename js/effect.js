@@ -48,7 +48,6 @@ const EFFECTS = {
 const DEFAULT_EFFECT = EFFECTS.none;
 let chosenEffect = DEFAULT_EFFECT;
 
-const { max, min, step, } = chosenEffect;
 const isDefault = () => chosenEffect === DEFAULT_EFFECT;
 
 
@@ -56,11 +55,11 @@ const updateSlider = () => {
   sliderElement.classList.remove('hidden');
   sliderElement.noUiSlider.updateOptions({
     range: {
-      min,
-      max,
+      min: chosenEffect.min,
+      max: chosenEffect.max,
     },
-    step,
-    start: max,
+    step: chosenEffect.step,
+    start: chosenEffect.max,
   });
 
   if (isDefault()) {
@@ -96,11 +95,11 @@ const resetEffects = () => {
 
 noUiSlider.create(sliderElement, {
   range: {
-    min,
-    max,
+    min: DEFAULT_EFFECT.min,
+    max: DEFAULT_EFFECT.max,
   },
-  start: max,
-  step,
+  start: DEFAULT_EFFECT.max,
+  step: DEFAULT_EFFECT.step,
   connect: 'lower',
 });
 updateSlider();
