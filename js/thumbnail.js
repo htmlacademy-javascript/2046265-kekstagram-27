@@ -21,3 +21,5 @@ randomUserPictures.forEach((picture) => {
 });
 
 userPictures.appendChild(pictureFragment);
+
+export {randomUserPictures};
