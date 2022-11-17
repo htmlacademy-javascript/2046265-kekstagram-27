@@ -7,6 +7,7 @@ const getData = (onSuccess) => {
     .then((pictures) => {
       onSuccess(pictures);
     })
+    .then(onSuccess)
     .catch(() => {
       showAlert('Не удалось загрузить изображения с сервера');
     });
