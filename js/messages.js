@@ -1,4 +1,4 @@
-import { isEscEvent } from './util.js';
+import { getEscapeEvent } from './util.js';
 
 const successMessageTemplate = document.querySelector('#success').content;
 const errorMessageTemplate = document.querySelector('#error').content;
@@ -16,7 +16,7 @@ const onDocumentClickRemoveSuccessMessage = (evt) => {
 };
 
 const onSuccessMessageEscKeydown = (evt) => {
-  if (isEscEvent(evt)) {
+  if (getEscapeEvent(evt)) {
     removeMessage('.success');
     document.removeEventListener('keydown', onSuccessMessageEscKeydown);
   }
@@ -46,7 +46,7 @@ const onDocumentClickRemoveErrorMessage = (evt) => {
 };
 
 const onErrorMessageEscKeydown = (evt) => {
-  if (isEscEvent(evt)) {
+  if (getEscapeEvent(evt)) {
     removeMessage('.error');
     document.removeEventListener('keydown', onErrorMessageEscKeydown);
   }

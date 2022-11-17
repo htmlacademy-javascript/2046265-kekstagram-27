@@ -1,8 +1,10 @@
 import { resetScale } from './scale.js';
 import { resetEffects } from './effect.js';
+import { sendData } from './api.js';
+import { errorMessageShow, successMessageShow} from './messages.js';
 
-const form = document.querySelector('.img-upload__form');
-const overlay = document.querySelector('.img-upload__overlay');
+const imgUploadForm = document.querySelector('.img-upload__form');
+const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const bodyElement = document.querySelector('body');
 const cancelButton = document.querySelector('#upload-cancel');
 const fileField = document.querySelector('#upload-file');
@@ -10,6 +12,7 @@ const hashtagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
 const uploadFileElement = document.querySelector('.img-upload__input');
 const imgDefaultElement = document.querySelector('.img-upload__preview img');
+const submitButton = document.querySelector('.img-upload__submit');
 
 const FILE_TYPES = ['jpeg', 'jpg', 'png', 'gif'];
 const MAX_HASHTAG_COUNT = 5;
@@ -24,24 +27,24 @@ uploadFileElement.addEventListener('change', () => {
   }
 });
 
-const pristine = new Pristine(form, {
+const pristine = new Pristine(imgUploadForm, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper__error',
 });
 
 const showModal = () => {
-  overlay.classList.remove('hidden');
+  imgUploadOverlay.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
   document.addEventListener('keydown', onEscKeyDown);
 };
 
 const hideModal = () => {
-  form.reset();
+  imgUploadForm.reset();
   resetScale();
   resetEffects();
   pristine.reset();
-  overlay.classList.add('hidden');
+  imgUploadOverlay.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
   document.removeEventListener('keydown', onEscKeyDown);
 };
@@ -101,12 +104,47 @@ pristine.addValidator(
   'Не более 140 символов'
 );
 
-form.addEventListener('submit', (evt) => {
+imgUploadForm.addEventListener('submit', (evt) => {
   if (!pristine.validate()) {
     evt.preventDefault();
   }
 });
 
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправляю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Отправить';
+};
+
+const initUploadForm = (onSuccess) => {
+  imgUploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          onSuccess();
+          unblockSubmitButton();
+          successMessageShow();
+        },
+        () => {
+          unblockSubmitButton();
+          errorMessageShow();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
+
 fileField.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
-form.addEventListener('submit', onFormSubmit);
+imgUploadForm.addEventListener('submit', onFormSubmit);
+
+export {initUploadForm, hideModal};
