@@ -3,15 +3,26 @@ import { resetEffects } from './effect.js';
 
 const form = document.querySelector('.img-upload__form');
 const overlay = document.querySelector('.img-upload__overlay');
-const body = document.querySelector('body');
+const bodyElement = document.querySelector('body');
 const cancelButton = document.querySelector('#upload-cancel');
 const fileField = document.querySelector('#upload-file');
 const hashtagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
+const uploadFileElement = document.querySelector('.img-upload__input');
+const imgDefaultElement = document.querySelector('.img-upload__preview img');
 
-
+const FILE_TYPES = ['jpeg', 'jpg', 'png', 'gif'];
 const MAX_HASHTAG_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+
+uploadFileElement.addEventListener('change', () => {
+  const file = uploadFileElement.files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if(matches) {
+    imgDefaultElement.src = URL.createObjectURL(file);
+  }
+});
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -21,7 +32,7 @@ const pristine = new Pristine(form, {
 
 const showModal = () => {
   overlay.classList.remove('hidden');
-  body.classList.add('modal-open');
+  bodyElement.classList.add('modal-open');
   document.addEventListener('keydown', onEscKeyDown);
 };
 
@@ -31,7 +42,7 @@ const hideModal = () => {
   resetEffects();
   pristine.reset();
   overlay.classList.add('hidden');
-  body.classList.remove('modal-open');
+  bodyElement.classList.remove('modal-open');
   document.removeEventListener('keydown', onEscKeyDown);
 };
 
@@ -99,5 +110,3 @@ form.addEventListener('submit', (evt) => {
 fileField.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
 form.addEventListener('submit', onFormSubmit);
-
-export {body};

@@ -1,4 +1,4 @@
-const ALERT_SHOW_TIME = 4000;
+const ALERT_SHOW_TIME = 5000;
 
 const getRandomInRange = (min, max) => {
   const minRounded = Math.ceil(min);
@@ -17,10 +17,6 @@ const getEscapeEvent = (evt, action) => {
   }
 };
 
-const checkStringLength = (string, length) => string.length <= length;
-
-checkStringLength('', 140);
-
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = 100;
@@ -29,7 +25,9 @@ const showAlert = (message) => {
   alertContainer.style.top = 0;
   alertContainer.style.right = 0;
   alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fontSize = '15px';
+  alertContainer.style.margin = '25vh 25vw';
+  alertContainer.style.lineHeight = '30px';
+  alertContainer.style.fontSize = '30px';
   alertContainer.style.textAlign = 'center';
   alertContainer.style.backgroundColor = 'red';
 
@@ -41,6 +39,10 @@ const showAlert = (message) => {
     alertContainer.remove();
   }, ALERT_SHOW_TIME);
 };
+
+const checkStringLength = (string, length) => string.length <= length;
+
+checkStringLength('', 140);
 
 const getRandomArrayElement = (array) =>
   array[getRandomInRange(0, array.length - 1)];

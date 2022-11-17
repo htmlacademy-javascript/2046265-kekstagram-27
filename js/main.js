@@ -6,3 +6,5 @@ import {randomUserPictures} from './thumbnail.js';
 getData((pictures) => {
   randomUserPictures(pictures);
 });
+
+getData(randomUserPictures);
