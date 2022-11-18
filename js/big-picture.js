@@ -26,14 +26,14 @@ const createCommentElement = (commentObj) => {
   return comment;
 };
 
-const uploadComments = (commentsArr, commentsQuantity) => {
+const uploadComments = (comments, commentsQuantity) => {
   for (let i = 1; i <= commentsQuantity; i++) {
-    const comment = createCommentElement(commentsArr[uploadedCommentsCollection.length]);
+    const comment = createCommentElement(comments[uploadedCommentsCollection.length]);
     commentsList.appendChild(comment);
 
-    if (!commentsArr[uploadedCommentsCollection.length]) {
+    if (!comments[uploadedCommentsCollection.length]) {
       commentsLoaderButton.classList.add('hidden');
-      uploadedCommentsCount.textContent = commentsArr.length;
+      uploadedCommentsCount.textContent = comments.length;
       return;
     }
 
