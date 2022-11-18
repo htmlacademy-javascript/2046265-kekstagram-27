@@ -1,5 +1,4 @@
-import { closePopupKeydownHandler } from './photo-upload-popup.js';
-import { addPopupCloseHandlers, removePopupCloseHandlers } from './popup.js';
+import { closePopupKeydownHandler, addPopupCloseHandlers, removePopupCloseHandlers} from './form.js';
 
 const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');

@@ -1,12 +1,31 @@
-import { showModal, closeModal, addPopupCloseHandlers, removePopupCloseHandlers } from './popup.js';
 import { uploadForm, clearPristineErrors } from './validation.js';
 import { resetPhotoScale } from './scale.js';
-import { resetPhotoEffect, resetPhotoEffectSlider } from './effects.js';
+import { resetEffects } from './effects.js';
 
 const uploadFileInput = uploadForm.querySelector('#upload-file');
 const uploadPopup = uploadForm.querySelector('.img-upload__overlay');
 const uploadClosePopupBtn = uploadForm.querySelector('#upload-cancel');
 
+
+const showModal = (modal) => {
+  document.body.classList.add('modal-open');
+  modal.classList.remove('hidden');
+};
+
+const closeModal = (modal) => {
+  modal.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+};
+
+const addPopupCloseHandlers = (closeButton, closeClickHandler, closeKeydownHandler) => {
+  closeButton.addEventListener('click', closeClickHandler);
+  document.addEventListener('keydown', closeKeydownHandler);
+};
+
+const removePopupCloseHandlers = (closeButton, closeClickHandler, closeKeydownHandler) => {
+  closeButton.removeEventListener('click', closeClickHandler);
+  document.removeEventListener('keydown', closeKeydownHandler);
+};
 
 const closeUploadPopup = () => {
   closeModal(uploadPopup);
@@ -17,8 +36,7 @@ const closeUploadPopup = () => {
 
   clearPristineErrors();
   resetPhotoScale();
-  resetPhotoEffect();
-  resetPhotoEffectSlider();
+  resetEffects();
 };
 
 const showUploadPopup = () => {
@@ -40,4 +58,4 @@ uploadFileInput.addEventListener('change', () => {
   showUploadPopup();
 });
 
-export { uploadPopup, closeUploadPopup, closePopupKeydownHandler };
+export {showModal, closeModal, addPopupCloseHandlers, removePopupCloseHandlers, uploadPopup, closeUploadPopup, closePopupKeydownHandler };

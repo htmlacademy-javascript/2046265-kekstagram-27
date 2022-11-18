@@ -2,7 +2,7 @@ import { getData } from './api.js';
 import { renderPhotosList } from './thumbnails.js';
 import { addPhotoClickHandler } from './big-picture.js';
 import { showErrorAlert } from './util.js';
-import './photo-upload-popup.js';
+import './form.js';
 import './photo-upload-submit.js';
 
 getData(
