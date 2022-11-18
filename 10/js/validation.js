@@ -1,56 +1,42 @@
-const MAX_HASHTAG = 5;
-const MAX_LENGTH_COMMENT = 140;
-const HASHTAG_RULE = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/;
+import { checkMaxLength, checkArrValuesNotRepeat } from './util.js';
 
-const commentsField = document.querySelector('.text__description');
-const hashtagField = document.querySelector('.text__hashtags');
-const imgUploadForm = document.querySelector('.img-upload__form');
+const HASTAG_REGEX = /^#[a-zа-яё0-9]/i;
+const MAX_HASTAG_LENGTH = 20;
+const MAX_HASTAG_QUANTITY = 5;
+const MAX_DESCRIPTION_LENGTH = 140;
 
-const isMaxLength = (string, maxLength) => string.length <= maxLength;
+const uploadForm = document.querySelector('.img-upload__form');
+const uploadHashtag = uploadForm.querySelector('.text__hashtags');
+const uploadDescription = uploadForm.querySelector('.text__description');
 
-const pristine = new Pristine(imgUploadForm, {
+const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
-  errorClass: 'text--invalid',
-  successClass: 'text--valid',
   errorTextParent: 'img-upload__field-wrapper',
-  errorTextTag: 'div',
-  errorTextClass: 'error__inner'
+  errorTextClass: 'error-text',
 });
 
-const createHashtagArray = (value) => value.split(' ');
+const clearPristineErrors = () => {
+  const pristineErrorsTexts = uploadForm.querySelectorAll('.error-text');
+  pristineErrorsTexts.forEach((errorText) => (errorText.style.display = 'none'));
+};
 
-const isValidHashtag = (value) => {
-  if (!value) {
-    return true;
+const validateHashtagSymbols = () => {
+  if (uploadHashtag.value !== '') {
+    return uploadHashtag.value.split(' ').every((hastag) => HASTAG_REGEX.test(hastag));
   }
-
-  const hashtag = createHashtagArray(value);
-
-  return hashtag.every((test) => HASHTAG_RULE.test(test));
+  return true;
 };
+const validateHastagMaxLength = () => uploadHashtag.value.split(' ').every((hastag) => checkMaxLength(hastag, MAX_HASTAG_LENGTH));
+const validateHashtagsQuantity = () => checkMaxLength(uploadHashtag.value.split(' '), MAX_HASTAG_QUANTITY);
+const validateHashtagValuesRepeat = () => checkArrValuesNotRepeat(uploadHashtag.value.split(' '), true);
 
-const isHashTagsLengthValid = (value) => {
-  const hashtag = createHashtagArray(value);
+pristine.addValidator(uploadHashtag, validateHashtagSymbols, 'Хэштег должен начинаться с # и состоять из букв и чисел');
+pristine.addValidator(uploadHashtag, validateHastagMaxLength, `Длина хэштега меньше ${MAX_HASTAG_LENGTH} символов`);
+pristine.addValidator(uploadHashtag, validateHashtagsQuantity, `Максимум ${MAX_HASTAG_QUANTITY} хэштегов`);
+pristine.addValidator(uploadHashtag, validateHashtagValuesRepeat, 'Хэштеги не могут повторяться');
 
-  return hashtag.length <= MAX_HASHTAG;
-};
+const validateDescriptionMaxLength = () => checkMaxLength(uploadDescription.value, MAX_DESCRIPTION_LENGTH);
 
-const isUniqeHashtag = (value) => {
-  const tag = createHashtagArray(value);
-  const uniqTag = new Set(tag);
+pristine.addValidator(uploadDescription, validateDescriptionMaxLength, `Максимальное длина ${MAX_DESCRIPTION_LENGTH} символов`);
 
-  return uniqTag.size === tag.length;
-};
-
-const isCommentLengthValid = (value) => isMaxLength(value, MAX_LENGTH_COMMENT);
-
-pristine.addValidator(hashtagField, isValidHashtag,'Хештег должен начинаться с "#", содержать буквы, числа (не более 20 символов, включая #)');
-pristine.addValidator(hashtagField, isHashTagsLengthValid,`нельзя указать больше ${MAX_HASHTAG} хэш-тегов`);
-pristine.addValidator(hashtagField, isUniqeHashtag,'один и тот же хэш-тег не может быть использован дважды');
-pristine.addValidator(commentsField, isCommentLengthValid, `Не более ${MAX_LENGTH_COMMENT} символов`);
-
-const resetFormValidation = () => {
-  pristine.reset();
-};
-
-export {commentsField, hashtagField, isMaxLength, pristine, resetFormValidation};
+export { uploadForm, pristine, clearPristineErrors };
