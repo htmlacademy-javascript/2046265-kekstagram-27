@@ -1,48 +1,40 @@
+const MAX_SCALE_VALUE = 100;
+const MIN_SCALE_VALUE = 25;
 const SCALE_STEP = 25;
-const SCALE_MIN = 25;
-const SCALE_MAX = 100;
 
-const scaleControlValue = document.querySelector('.scale__control--value');
-const imgUploadPreview = document.querySelector('.img-upload__preview img');
-const imgScaleContainer = document.querySelector('.img-upload__scale');
-const scaleControlSmaller = document.querySelector('.scale__control--smaller');
-const scaleControlBigger = document.querySelector('.scale__control--bigger');
+const uploadImg = document.querySelector('.img-upload__preview').querySelector('img');
+const smallerScaleBtn = document.querySelector('.scale__control--smaller');
+const biggerScaleBtn = document.querySelector('.scale__control--bigger');
+const scaleInput = document.querySelector('.scale__control--value');
 
-let scale;
 
-const scalePreview = (measure) => {
-  scaleControlValue.value = `${measure}%`;
-  imgUploadPreview.style.transform = `scale(${measure / 100})`;
+const resetPhotoScale = () => {
+  scaleInput.value = '100%';
+  uploadImg.style = '';
 };
 
-const setDefaultValue = () => {
-  scale = SCALE_MAX;
-  scalePreview(scale);
+const getPhotoScale = () => parseInt(scaleInput.value, 10);
+
+const setPhotoScale = (scale) => {
+  uploadImg.style.transform = `scale(${scale / 100})`;
+  scaleInput.value = `${scale}%`;
 };
 
-const zoomIn = () => {
-  if (scale < SCALE_MAX) {
-    scale += SCALE_STEP;
+const smallerScaleBtnClickHandler = () => {
+  if (getPhotoScale() > MIN_SCALE_VALUE) {
+    const newScale = getPhotoScale() - SCALE_STEP;
+    setPhotoScale(newScale);
   }
-  scalePreview(scale);
 };
 
-const zoomDown = () => {
-  if (scale > SCALE_MIN) {
-    scale -= SCALE_STEP;
+const biggerScaleBtnClickHandler = () => {
+  if (getPhotoScale() < MAX_SCALE_VALUE) {
+    const newScale = getPhotoScale() + SCALE_STEP;
+    setPhotoScale(newScale);
   }
-  scalePreview(scale);
 };
 
-imgScaleContainer.addEventListener('click', (evt) => {
-  switch (evt.target) {
-    case scaleControlSmaller:
-      zoomDown();
-      break;
-    case scaleControlBigger:
-      zoomIn();
-      break;
-  }
-});
+smallerScaleBtn.addEventListener('click', smallerScaleBtnClickHandler);
+biggerScaleBtn.addEventListener('click', biggerScaleBtnClickHandler);
 
-export {setDefaultValue};
+export { uploadImg, resetPhotoScale };

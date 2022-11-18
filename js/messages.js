@@ -1,68 +1,49 @@
-const ALERT_SHOW_TIME = 5000;
+import { closePopupKeydownHandler } from './photo-upload-popup.js';
+import { addPopupCloseHandlers, removePopupCloseHandlers } from './popup.js';
 
-const errorTemplate = document.querySelector('#error').content.querySelector('.error');
-const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
+const successMessageCloseBtn = successMessageTemplate.querySelector('.success__button');
+const errorMessageCloseBtn = errorMessageTemplate.querySelector('.error__button');
 
-let activeDialog = null;
 
-const isActiveDialog = () => !!activeDialog;
+const createMessageCloseHandlers = (message, closeBtn) => {
 
-const onKeydownHandler = (evt) => {
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
+  const closeMessage = () => {
+    message.remove();
+    removePopupCloseHandlers(closeBtn, messageCloseClickHandler, messageCloseKeydownHandler);
+    document.removeEventListener('click', fromOutsideMessageClickHandler);
 
-    closeDialog(activeDialog);
+    if (message === errorMessageTemplate) {
+      document.addEventListener('keydown', closePopupKeydownHandler);
+    }
+
+  };
+
+  function messageCloseKeydownHandler(evt) {
+    if (evt.code === 'Escape') {
+      closeMessage();
+    }
   }
-};
 
-function closeDialog (element) {
-  element.remove();
-  activeDialog = null;
+  function messageCloseClickHandler() {
+    closeMessage();
+  }
 
-  document.removeEventListener('keydown', onKeydownHandler);
-}
-
-const showErrorMessage = () => {
-  const errorMessage = errorTemplate.cloneNode(true);
-  document.body.appendChild(errorMessage);
-
-  const sectionError = document.querySelector('.error');
-  activeDialog = sectionError;
-
-  sectionError.addEventListener(('click'), (evt) => {
-    if (evt.target.getAttribute('data-dialog-close')) {
-      closeDialog(sectionError);
+  function fromOutsideMessageClickHandler(evt) {
+    if (evt.target.contains(message)) {
+      closeMessage();
     }
-  });
+  }
 
-  document.addEventListener('keydown', onKeydownHandler);
+  addPopupCloseHandlers(closeBtn, messageCloseClickHandler, messageCloseKeydownHandler);
+  document.addEventListener('click', fromOutsideMessageClickHandler);
 };
 
-const showSuccessMessage = () => {
-  const successMessage = successTemplate.cloneNode(true);
-  document.body.appendChild(successMessage);
-
-  const sectionSuccess = document.querySelector('.success');
-  activeDialog = sectionSuccess;
-
-  sectionSuccess.addEventListener(('click'), (evt) => {
-    if (evt.target.getAttribute('data-dialog-close')) {
-      closeDialog(sectionSuccess);
-    }
-  });
-
-  document.addEventListener('keydown', onKeydownHandler);
+const showUploadMessage = (message, messageCloseBtn) => {
+  document.body.append(message);
+  document.removeEventListener('keydown', closePopupKeydownHandler);
+  createMessageCloseHandlers(message, messageCloseBtn);
 };
 
-const showAlertMessage = (message) => {
-  const alertContainer = document.createElement('div');
-  alertContainer.classList.add('error-message');
-  alertContainer.textContent = message;
-  document.body.append(alertContainer);
-
-  setTimeout(() => {
-    alertContainer.remove();
-  }, ALERT_SHOW_TIME);
-};
-
-export {isActiveDialog, showErrorMessage, showSuccessMessage, showAlertMessage};
+export { successMessageTemplate, errorMessageTemplate, successMessageCloseBtn, errorMessageCloseBtn, showUploadMessage };

@@ -1,110 +1,128 @@
-const image = document.querySelector('.img-upload__preview img');
-const form = document.querySelector('.img-upload__form');
-const sliderElement = document.querySelector('.effect-level__slider');
-const effectLevel = document.querySelector('.effect-level__value');
+import { uploadImg } from './scale.js';
 
-const EFFECTS = {
-  none: {
+const EFFECTS = [
+  {
+    name: 'none',
     min: 0,
-    max: 100,
-    step: 1,
+    max: 0,
+    step: 0,
+    getFilterStyle() {
+      return 'none';
+    }
   },
-  chrome: {
-    style: 'grayscale',
-    min: 0,
-    max: 1,
-    step: 0.1,
-    unit: '',
-  },
-  sepia: {
-    style: 'sepia',
+
+  {
+    name: 'chrome',
     min: 0,
     max: 1,
     step: 0.1,
-    unit: '',
+    getFilterStyle(value) {
+      return `grayscale(${value})`;
+    }
   },
-  marvin: {
-    style: 'invert',
+
+  {
+    name: 'sepia',
+    min: 0,
+    max: 1,
+    step: 0.1,
+    getFilterStyle(value) {
+      return `sepia(${value})`;
+    }
+  },
+
+  {
+    name: 'marvin',
     min: 0,
     max: 100,
     step: 1,
-    unit: '%',
+    getFilterStyle(value) {
+      return `invert(${value}%)`;
+    }
   },
-  phobos: {
-    style: 'blur',
+
+  {
+    name: 'phobos',
     min: 0,
     max: 3,
     step: 0.1,
-    unit: 'px',
+    getFilterStyle(value) {
+      return `blur(${value}px)`;
+    }
   },
-  heat: {
-    style: 'brightness',
-    min: 0,
+
+  {
+    name: 'heat',
+    min: 1,
     max: 3,
     step: 0.1,
-    unit: '',
-  },
-};
-const DEFAULT_EFFECT = EFFECTS.none;
+    getFilterStyle(value) {
+      return `brightness(${value})`;
+    }
+  }
+
+];
+
+const DEFAULT_EFFECT = EFFECTS[0];
+
+const slider = document.querySelector('.effect-level__slider');
+const sliderInput = document.querySelector('.effect-level__value');
+const effectsListContainer = document.querySelector('.effects__list');
+
 let chosenEffect = DEFAULT_EFFECT;
 
-const isDefault = () => chosenEffect === DEFAULT_EFFECT;
-
-
-const updateSlider = () => {
-  sliderElement.classList.remove('hidden');
-  sliderElement.noUiSlider.updateOptions({
-    range: {
-      min: chosenEffect.min,
-      max: chosenEffect.max,
-    },
-    step: chosenEffect.step,
-    start: chosenEffect.max,
-  });
-
-  if (isDefault()) {
-    sliderElement.classList.add('hidden');
-  }
-};
-
-const onFormChange = (evt) => {
-  if (!evt.target.classList.contains('effects__radio')) {
-    return;
-  }
-  chosenEffect = EFFECTS[evt.target.value];
-  updateSlider();
-};
-
-const onSliderUpdate = () => {
-  image.style.filter = 'none';
-  image.className = '';
-  effectLevel.value = '';
-  if (isDefault()) {
-    return;
-  }
-  const sliderValue = sliderElement.noUiSlider.get();
-  image.style.filter = `${chosenEffect.style}(${sliderValue}${chosenEffect.unit})`;
-  image.classList.add(`effects__preview--${chosenEffect.name}`);
-  effectLevel.value = sliderValue;
-};
-
-const resetEffects = () => {
-  chosenEffect = DEFAULT_EFFECT;
-  updateSlider();
-};
-
-noUiSlider.create(sliderElement, {
+noUiSlider.create(slider, {
   range: {
-    min: DEFAULT_EFFECT.min,
-    max: DEFAULT_EFFECT.max,
+    min: 0,
+    max: 100,
   },
-  start: DEFAULT_EFFECT.max,
-  step: DEFAULT_EFFECT.step,
-  connect: 'lower',
+  start: 0,
+  step: 1,
+  connect: 'upper',
 });
-updateSlider();
 
-form.addEventListener('change', onFormChange);
-sliderElement.noUiSlider.on('update', onSliderUpdate);
 
-export { resetEffects };
+const resetPhotoEffect = () => {
+  uploadImg.style.filter = 'none';
+  uploadImg.className = '';
+};
+
+const resetPhotoEffectSlider = () => {
+  slider.classList.add('hidden');
+  sliderInput.value = 0;
+};
+
+slider.noUiSlider.on('update', () => {
+  sliderInput.value = slider.noUiSlider.get();
+  uploadImg.style.filter = chosenEffect.getFilterStyle(sliderInput.value);
+});
+
+const effectsListClickHandler = (evt) => {
+  if (evt.target.classList.contains('effects__radio')) {
+
+    chosenEffect = EFFECTS.find((effect) => effect.name === evt.target.value);
+
+    if (chosenEffect.name === 'none') {
+      resetPhotoEffect();
+      resetPhotoEffectSlider();
+      return;
+    }
+
+    slider.classList.remove('hidden');
+    uploadImg.className = `effects__preview--${chosenEffect.name}`;
+
+    slider.noUiSlider.updateOptions({
+      range: {
+        min: chosenEffect.min,
+        max: chosenEffect.max,
+      },
+      step: chosenEffect.step,
+      start: chosenEffect.max
+    });
+
+  }
+};
+
+effectsListContainer.addEventListener('click', effectsListClickHandler);
+
+export { resetPhotoEffect, resetPhotoEffectSlider };

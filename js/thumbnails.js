@@ -1,47 +1,17 @@
-import { renderPictureDialog, keyDownHandler, openBigPicture } from './big-picture.js';
-import { getDataList } from './data.js';
+const photosContainer = document.querySelector('.pictures');
+const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const photoFragment = document.createDocumentFragment();
 
-const NUMBER_OF_PHOTOS = 25;
-
-const thumbnailPicture = document.querySelector('#picture').content.querySelector('.picture');
-const gallery = document.querySelector('.pictures');
-const imageContainer = document.querySelector('.photos-gallery');
-
-const createPictureElement = (data) => {
-  const {url, comments, likes, id} = data;
-  const photoElement = thumbnailPicture.cloneNode(true);
-
-  photoElement.dataset.id = id;
-  photoElement.querySelector('.picture__img').src = url;
-  photoElement.querySelector('.picture__comments').textContent = comments.length;
-  photoElement.querySelector('.picture__likes').textContent = likes;
-
-  return photoElement;
-};
-
-gallery.addEventListener('click', (evt) => {
-  const element = evt.target.closest('[data-id]');
-  const picture = element
-    ? getDataList().slice(0, NUMBER_OF_PHOTOS).find((item) => item.id === Number(element.dataset.id))
-    : null;
-
-  if (picture) {
-    renderPictureDialog(picture);
-    openBigPicture();
-
-    document.addEventListener('keydown', keyDownHandler);
-  }
-});
-
-const renderPhotos = (photos) => {
-  const photosFragment = document.createDocumentFragment();
-
-  photos.forEach((photo) => {
-    photosFragment.appendChild(createPictureElement(photo));
+const renderPhotosList = (photos) => {
+  photos.forEach(({id, url, likes, comments}) => {
+    const photo = photoTemplate.cloneNode(true);
+    photo.dataset.id = id;
+    photo.querySelector('.picture__img').src = url;
+    photo.querySelector('.picture__likes').textContent = likes;
+    photo.querySelector('.picture__comments').textContent = comments.length;
+    photoFragment.appendChild(photo);
   });
-
-  imageContainer.innerHTML = '';
-  imageContainer.appendChild(photosFragment);
+  photosContainer.appendChild(photoFragment);
 };
 
-export {renderPhotos};
+export { renderPhotosList };
