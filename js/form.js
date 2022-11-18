@@ -1,150 +1,99 @@
-import { resetScale } from './scale.js';
-import { resetEffects } from './effect.js';
-import { sendData } from './api.js';
-import { errorMessageShow, successMessageShow} from './messages.js';
+import {pristine, commentsField, hashtagField, resetFormValidation} from './validation.js';
+import {setDefaultValue} from './resize-image.js';
+import {resetSliderInit, resetSlider, resetEffect} from './effects.js';
+import {sendData} from './api.js';
+import {showErrorMessage, showSuccessMessage} from './message-upload.js';
+import {uploadFiles} from './upload-file.js';
 
-const imgUploadForm = document.querySelector('.img-upload__form');
+const ALERT_SHOW_TIME = 5000;
+
+const uploadFile = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
-const bodyElement = document.querySelector('body');
-const cancelButton = document.querySelector('#upload-cancel');
-const fileField = document.querySelector('#upload-file');
-const hashtagField = document.querySelector('.text__hashtags');
-const commentField = document.querySelector('.text__description');
-const uploadFileElement = document.querySelector('.img-upload__input');
-const imgDefaultElement = document.querySelector('.img-upload__preview img');
+const uploadCancel = document.querySelector('#upload-cancel');
+const imgUploadForm = document.querySelector('.img-upload__form');
 const submitButton = document.querySelector('.img-upload__submit');
 
-const FILE_TYPES = ['jpeg', 'jpg', 'png', 'gif'];
-const MAX_HASHTAG_COUNT = 5;
-const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
-
-uploadFileElement.addEventListener('change', () => {
-  const file = uploadFileElement.files[0];
-  const fileName = file.name.toLowerCase();
-  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
-  if(matches) {
-    imgDefaultElement.src = URL.createObjectURL(file);
-  }
-});
-
-const pristine = new Pristine(imgUploadForm, {
-  classTo: 'img-upload__field-wrapper',
-  errorTextParent: 'img-upload__field-wrapper',
-  errorTextClass: 'img-upload__field-wrapper__error',
-});
-
-const showModal = () => {
+const showUploadPopup = () => {
   imgUploadOverlay.classList.remove('hidden');
-  bodyElement.classList.add('modal-open');
-  document.addEventListener('keydown', onEscKeyDown);
+  document.body.classList.add('modal-open');
+  document.addEventListener('keydown', keyDownHandler);
+
+  resetSliderInit();
+  resetSlider();
+
+  setDefaultValue();
+  uploadFiles();
 };
 
-const hideModal = () => {
-  imgUploadForm.reset();
-  resetScale();
-  resetEffects();
-  pristine.reset();
+const closeUploadPopup = () => {
   imgUploadOverlay.classList.add('hidden');
-  bodyElement.classList.remove('modal-open');
-  document.removeEventListener('keydown', onEscKeyDown);
+  document.body.classList.remove('modal-open');
+
+  document.removeEventListener('keydown', keyDownHandler);
+  imgUploadForm.reset();
+  resetEffect();
+  resetFormValidation();
 };
 
-const isTextFieldFocused = () =>
-  document.activeElement === hashtagField ||
-  document.activeElement === commentField;
+uploadFile.addEventListener('change', showUploadPopup);
 
-function onEscKeyDown(evt) {
-  if (evt.key === 'Escape' && !isTextFieldFocused()) {
+uploadCancel.addEventListener('click', closeUploadPopup);
+
+function keyDownHandler (evt) {
+  const focusHashTag = document.activeElement === hashtagField;
+  const focusComment = document.activeElement === commentsField;
+
+  if (evt.key === 'Escape' && !focusHashTag && !focusComment) {
     evt.preventDefault();
-    hideModal();
+    closeUploadPopup();
   }
 }
 
-const onCancelButtonClick = () => {
-  hideModal();
+const disableSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
 };
 
-const onFileInputChange = () => {
-  showModal();
+const enableSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
 };
 
-const isValidTag = (tag) => VALID_SYMBOLS.test(tag);
-
-const hasValidCount = (tags) => tags.length <= MAX_HASHTAG_COUNT;
-
-const hasUniqueTags = (tags) => {
-  const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
-  return lowerCaseTags.length === new Set(lowerCaseTags).size;
+const onSuccess = () => {
+  enableSubmitButton();
+  showSuccessMessage();
+  closeUploadPopup();
 };
 
-const validateTags = (value) => {
-  const tags = value
-    .trim()
-    .split(' ')
-    .filter((tag) => tag.trim().length);
-  return hasValidCount(tags) && hasUniqueTags(tags) && tags.every(isValidTag);
+const onError = () => {
+  showErrorMessage();
+  enableSubmitButton();
 };
-
-pristine.addValidator(
-  hashtagField,
-  validateTags,
-  'Неправильно заполнены хэштеги'
-);
-
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-};
-
-const checkStringLength = (string) => string.length <= 140;
-
-pristine.addValidator(
-  commentField,
-  checkStringLength,
-  'Не более 140 символов'
-);
 
 imgUploadForm.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
-    evt.preventDefault();
+  evt.preventDefault();
+
+  const isFormValid = pristine.validate();
+
+  if (isFormValid) {
+    disableSubmitButton();
+    sendData(
+      onSuccess,
+      onError,
+      new FormData(evt.target)
+    );
   }
 });
 
-const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = 'Отправляю...';
+const showAlertMessage = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.classList.add('error-message');
+  alertContainer.textContent = message;
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
 };
 
-const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = 'Отправить';
-};
-
-const initUploadForm = (onSuccess) => {
-  imgUploadForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    const isValid = pristine.validate();
-    if (isValid) {
-      blockSubmitButton();
-      sendData(
-        () => {
-          onSuccess();
-          unblockSubmitButton();
-          successMessageShow();
-        },
-        () => {
-          unblockSubmitButton();
-          errorMessageShow();
-        },
-        new FormData(evt.target),
-      );
-    }
-  });
-};
-
-fileField.addEventListener('change', onFileInputChange);
-cancelButton.addEventListener('click', onCancelButtonClick);
-imgUploadForm.addEventListener('submit', onFormSubmit);
-
-export {initUploadForm, hideModal};
+export {closeUploadPopup, showAlertMessage};
