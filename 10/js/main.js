@@ -1,13 +1,7 @@
-import './thumbnail.js';
+import './big-picture.js';
+import './validation.js';
+import './resize-image.js';
+import './effects.js';
+import './thumbnails.js';
 import './form.js';
-import {getData} from './api.js';
-import {randomUserPictures} from './thumbnail.js';
-import {initUploadForm, hideModal} from './form.js';
-
-
-getData((pictures) => {
-  randomUserPictures(pictures);
-});
-
-getData(randomUserPictures);
-initUploadForm(hideModal);
+import './init-data.js';
