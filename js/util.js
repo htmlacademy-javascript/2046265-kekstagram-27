@@ -49,12 +49,12 @@ const getRandomArrValues = (arr, valuesQuantity) => {
   return result;
 };
 
-function debounce (callback, timeoutDelay) {
+const debounce = (callback, timeoutDelay) => {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-}
+};
 
 export { checkMaxLength, checkArrValuesNotRepeat, clearInputs, showErrorAlert, getRandomArrValues, debounce };
