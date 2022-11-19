@@ -31,4 +31,30 @@ const showErrorAlert = (message) => {
 
 };
 
-export { checkMaxLength, checkArrValuesNotRepeat, clearInputs, showErrorAlert };
+const getRandomArrValues = (arr, valuesQuantity) => {
+  const result = [];
+
+  const createRandomIndex = () => {
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    if (result.includes(arr[randomIndex])) {
+      return createRandomIndex();
+    }
+    return randomIndex;
+  };
+
+  for (let i = 0; i < valuesQuantity; i++) {
+    result.push(arr[createRandomIndex()]);
+  }
+
+  return result;
+};
+
+function debounce (callback, timeoutDelay) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+export { checkMaxLength, checkArrValuesNotRepeat, clearInputs, showErrorAlert, getRandomArrValues, debounce };
