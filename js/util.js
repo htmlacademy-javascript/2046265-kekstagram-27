@@ -1,26 +1,34 @@
-const getRandomInRange = (min, max) => {
-  const minRounded = Math.ceil(min);
-  const maxRounded = Math.floor(max);
-  return (max <= min || min < 0 || max < 0 || typeof min !== 'number' || typeof max !== 'number')
-    ? NaN
-    : Math.floor(Math.random() * ((maxRounded - minRounded + 1)) + minRounded);
-};
+const checkMaxLength = (value, maxLength) => value.length <= maxLength;
 
-getRandomInRange();
-
-
-const getEscapeEvent = (evt, action) => {
-  if (evt.key === 'Escape') {
-    action();
+const checkArrValuesNotRepeat = (arr, isStringsArr = false) => {
+  if (isStringsArr) {
+    arr = arr.map((string) => string.toLowerCase());
   }
+  const arrWithoutRepeats = new Set(arr);
+  return arrWithoutRepeats.size === arr.length;
 };
 
-const checkStringLength = (string, length) => string.length <= length;
+const clearInputs = (container) => {
+  const inputsWithoutDefaultVal = container.querySelectorAll('input:not([value])');
+  const allTextAreas = container.querySelectorAll('textarea');
+  inputsWithoutDefaultVal.forEach((input) => (input.value = ''));
+  allTextAreas.forEach((textArea) => (textArea.value = ''));
+};
 
-checkStringLength('', 140);
+const showErrorAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = '100';
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.width = '100%';
+  alertContainer.style.top = '0';
+  alertContainer.style.padding = '10px 5px';
+  alertContainer.style.fontSize = '22px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'Crimson';
 
-const getRandomArrayElement = (array) =>
-  array[getRandomInRange(0, array.length - 1)];
+  alertContainer.textContent = message;
+  document.body.append(alertContainer);
 
-export {getRandomInRange, getEscapeEvent, getRandomArrayElement};
+};
 
+export { checkMaxLength, checkArrValuesNotRepeat, clearInputs, showErrorAlert };
