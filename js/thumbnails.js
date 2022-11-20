@@ -1,17 +1,19 @@
-const picturesContainer = document.querySelector('.pictures');
-const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const pictureFragment = document.createDocumentFragment();
+const photosContainer = document.querySelector('.pictures');
+const photoTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-const renderPhotosList = (pictures) => {
-  pictures.forEach(({id, url, likes, comments}) => {
-    const pictureElement = pictureTemplate.cloneNode(true);
-    pictureElement.dataset.id = id;
-    pictureElement.querySelector('.picture__img').src = url;
-    pictureElement.querySelector('.picture__likes').textContent = likes;
-    pictureElement.querySelector('.picture__comments').textContent = comments.length;
-    pictureFragment.appendChild(pictureElement);
+const renderPhotosList = (photos) => {
+  const photoListFragment = document.createDocumentFragment();
+
+  photos.forEach(({id, url, likes, comments}) => {
+    const photo = photoTemplate.cloneNode(true);
+    photo.dataset.id = id;
+    photo.querySelector('.picture__img').src = url;
+    photo.querySelector('.picture__likes').textContent = likes;
+    photo.querySelector('.picture__comments').textContent = comments.length;
+    photoListFragment.appendChild(photo);
   });
-  picturesContainer.appendChild(pictureFragment);
+
+  photosContainer.appendChild(photoListFragment);
 };
 
 export { renderPhotosList };

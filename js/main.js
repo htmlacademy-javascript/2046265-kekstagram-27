@@ -5,6 +5,7 @@ import { addPhotoClickHandler } from './big-picture.js';
 import { showErrorAlert } from './util.js';
 import './form.js';
 import './photo-upload-submit.js';
+import './upload-image.js';
 
 getData(
   (photos) => {

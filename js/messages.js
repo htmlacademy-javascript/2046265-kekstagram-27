@@ -2,8 +2,8 @@ import { closePopupKeydownHandler, addPopupCloseHandlers, removePopupCloseHandle
 
 const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
-const successMessageCloseBtn = successMessageTemplate.querySelector('.success__button');
-const errorMessageCloseBtn = errorMessageTemplate.querySelector('.error__button');
+const successMessageCloseButton = successMessageTemplate.querySelector('.success__button');
+const errorMessageCloseButton = errorMessageTemplate.querySelector('.error__button');
 
 
 const createMessageCloseHandlers = (message, closeBtn) => {
@@ -45,4 +45,4 @@ const showUploadMessage = (message, messageCloseBtn) => {
   createMessageCloseHandlers(message, messageCloseBtn);
 };
 
-export { successMessageTemplate, errorMessageTemplate, successMessageCloseBtn, errorMessageCloseBtn, showUploadMessage };
+export { successMessageTemplate, errorMessageTemplate, successMessageCloseButton, errorMessageCloseButton, showUploadMessage };
