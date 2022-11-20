@@ -1,7 +1,7 @@
 import { uploadReset } from './upload-image.js';
 
 const uploadPopup = document.querySelector('.img-upload__overlay');
-const uploadClosePopupBtn = document.querySelector('#upload-cancel');
+const uploadClosePopupButton = document.querySelector('#upload-cancel');
 
 
 const showModal = (modal) => {
@@ -26,13 +26,13 @@ const removePopupCloseHandlers = (closeButton, closeClickHandler, closeKeydownHa
 
 const closeUploadPopup = () => {
   closeModal(uploadPopup);
-  removePopupCloseHandlers(uploadClosePopupBtn, closePopupClickHandler, closePopupKeydownHandler);
+  removePopupCloseHandlers(uploadClosePopupButton, closePopupClickHandler, closePopupKeydownHandler);
   uploadReset();
 };
 
 const showUploadPopup = () => {
   showModal(uploadPopup);
-  addPopupCloseHandlers(uploadClosePopupBtn, closePopupClickHandler, closePopupKeydownHandler);
+  addPopupCloseHandlers(uploadClosePopupButton, closePopupClickHandler, closePopupKeydownHandler);
 };
 
 function closePopupClickHandler() {
