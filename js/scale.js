@@ -2,7 +2,7 @@ const MAX_SCALE_VALUE = 100;
 const MIN_SCALE_VALUE = 25;
 const SCALE_STEP = 25;
 
-const uploadImg = document.querySelector('.img-upload__preview').querySelector('img');
+const uploadImg = document.querySelector('.img-upload__preview img');
 const smallerScaleButton = document.querySelector('.scale__control--smaller');
 const biggerScaleButton = document.querySelector('.scale__control--bigger');
 const scaleControl = document.querySelector('.scale__control--value');

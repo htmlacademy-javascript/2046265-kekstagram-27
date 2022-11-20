@@ -8,7 +8,7 @@ const UPLOAD_FILES_TYPES = ['jpg', 'jpeg', 'png'];
 const FILE_TYPE_ERROR_SHOW_TIME = 5000;
 
 const uploadFileInput = document.querySelector('#upload-file');
-const uploadImg = document.querySelector('.img-upload__preview').querySelector('img');
+const uploadImg = document.querySelector('.img-upload__preview img');
 
 
 uploadImg.addEventListener('load', () => {

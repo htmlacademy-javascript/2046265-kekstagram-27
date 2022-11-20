@@ -1,5 +1,5 @@
 import { sendData } from './api.js';
-import { successMessageTemplate, errorMessageTemplate, successMessageCloseBtn, errorMessageCloseBtn, showUploadMessage } from './messages.js';
+import { successMessageTemplate, errorMessageTemplate, successMessageCloseButton, errorMessageCloseButton, showUploadMessage } from './messages.js';
 import { closeUploadPopup } from './form.js';
 import { uploadForm, pristine } from './validation.js';
 
@@ -18,12 +18,12 @@ const unblockSubmitButton = () => {
 
 const onSuccess = () => {
   closeUploadPopup();
-  showUploadMessage(successMessageTemplate, successMessageCloseBtn);
+  showUploadMessage(successMessageTemplate, successMessageCloseButton);
   unblockSubmitButton();
 };
 
 const onFail = () => {
-  showUploadMessage(errorMessageTemplate, errorMessageCloseBtn);
+  showUploadMessage(errorMessageTemplate, errorMessageCloseButton);
   unblockSubmitButton();
 };
 
