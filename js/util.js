@@ -11,8 +11,8 @@ const checkArrValuesNotRepeat = (arr, isStringsArr = false) => {
 const clearInputs = (container) => {
   const inputsWithoutDefaultVal = container.querySelectorAll('input:not([value])');
   const allTextAreas = container.querySelectorAll('textarea');
-  inputsWithoutDefaultVal.forEach((input) => (input.value = ''));
-  allTextAreas.forEach((textArea) => (textArea.value = ''));
+  inputsWithoutDefaultVal.forEach((input) => {input.value = '';});
+  allTextAreas.forEach((textArea) => {textArea.value = '';});
 };
 
 const showErrorAlert = (message) => {

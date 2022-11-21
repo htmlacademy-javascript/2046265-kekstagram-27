@@ -42,6 +42,7 @@ function closePopupClickHandler() {
 function closePopupKeydownHandler(evt) {
   if (evt.code === 'Escape' && document.activeElement.getAttribute('type') !== 'text' && document.activeElement.tagName !== 'TEXTAREA') {
     closeUploadPopup();
+    showUploadPopup();
   }
 }
 
