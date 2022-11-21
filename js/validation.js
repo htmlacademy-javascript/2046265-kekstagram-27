@@ -1,8 +1,8 @@
 import { checkMaxLength, checkArrValuesNotRepeat } from './util.js';
 
-const HASTAG_REGEX = /^#[a-zа-яё0-9]/i;
-const MAX_HASTAG_LENGTH = 20;
-const MAX_HASTAG_QUANTITY = 5;
+const HASHTAG_REGEX = /^#[a-zа-яё0-9]/i;
+const MAX_HASHTAG_LENGTH = 20;
+const MAX_HASHTAG_QUANTITY = 5;
 const MAX_DESCRIPTION_LENGTH = 140;
 
 const uploadForm = document.querySelector('.img-upload__form');
@@ -17,22 +17,23 @@ const pristine = new Pristine(uploadForm, {
 
 const clearPristineErrors = () => {
   const pristineErrorsTexts = uploadForm.querySelectorAll('.error-text');
-  pristineErrorsTexts.forEach((errorText) => (errorText.style.display = 'none'));
+  pristineErrorsTexts.forEach((errorText) => {errorText.style.display = 'none';});
 };
 
 const validateHashtagSymbols = () => {
   if (uploadHashtag.value !== '') {
-    return uploadHashtag.value.split(' ').every((hastag) => HASTAG_REGEX.test(hastag));
+    return uploadHashtag.value.split(' ').every((hashtag) => HASHTAG_REGEX.test(hashtag));
   }
   return true;
 };
-const validateHastagMaxLength = () => uploadHashtag.value.split(' ').every((hastag) => checkMaxLength(hastag, MAX_HASTAG_LENGTH));
-const validateHashtagsQuantity = () => checkMaxLength(uploadHashtag.value.split(' '), MAX_HASTAG_QUANTITY);
+
+const validateHashtagMaxLength = () => uploadHashtag.value.split(' ').every((hashtag) => checkMaxLength(hashtag, MAX_HASHTAG_LENGTH));
+const validateHashtagsQuantity = () => checkMaxLength(uploadHashtag.value.split(' '), MAX_HASHTAG_QUANTITY);
 const validateHashtagValuesRepeat = () => checkArrValuesNotRepeat(uploadHashtag.value.split(' '), true);
 
 pristine.addValidator(uploadHashtag, validateHashtagSymbols, 'Хэштег должен начинаться с # и состоять из букв и чисел');
-pristine.addValidator(uploadHashtag, validateHastagMaxLength, `Длина хэштега меньше ${MAX_HASTAG_LENGTH} символов`);
-pristine.addValidator(uploadHashtag, validateHashtagsQuantity, `Максимум ${MAX_HASTAG_QUANTITY} хэштегов`);
+pristine.addValidator(uploadHashtag, validateHashtagMaxLength, `Длина хэштега меньше ${MAX_HASHTAG_LENGTH} символов`);
+pristine.addValidator(uploadHashtag, validateHashtagsQuantity, `Максимум ${MAX_HASHTAG_QUANTITY} хэштегов`);
 pristine.addValidator(uploadHashtag, validateHashtagValuesRepeat, 'Хэштеги не могут повторяться');
 
 const validateDescriptionMaxLength = () => checkMaxLength(uploadDescription.value, MAX_DESCRIPTION_LENGTH);

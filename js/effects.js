@@ -67,7 +67,7 @@ const updateSlider = () => {
   }
 };
 
-const onFormChange = (evt) => {
+const onFormHandler = (evt) => {
   if (!evt.target.classList.contains('effects__radio')) {
     return;
   }
@@ -104,7 +104,7 @@ noUiSlider.create(sliderElement, {
 });
 updateSlider();
 
-form.addEventListener('change', onFormChange);
+form.addEventListener('change', onFormHandler);
 sliderElement.noUiSlider.on('update', onSliderUpdate);
 
 export { resetEffects };
