@@ -40,10 +40,9 @@ function closePopupClickHandler() {
 }
 
 function closePopupKeydownHandler(evt) {
-  if (evt.code === 'Escape' && document.activeElement.getAttribute('type') !== 'text' && document.activeElement.tagName !== 'TEXTAREA') {
+  if (evt.code === 'Escape' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
     closeUploadPopup();
-    showUploadPopup();
   }
 }
 
-export {showModal, closeModal, addPopupCloseHandlers, removePopupCloseHandlers, uploadPopup, closeUploadPopup, showUploadPopup, closePopupKeydownHandler };
+export {showModal, closeModal, addPopupCloseHandlers, removePopupCloseHandlers, closeUploadPopup, showUploadPopup, closePopupKeydownHandler };
