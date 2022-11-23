@@ -50,6 +50,7 @@ let chosenEffect = DEFAULT_EFFECT;
 
 const isDefault = () => chosenEffect === DEFAULT_EFFECT;
 
+
 const updateSlider = () => {
   sliderElement.classList.remove('hidden');
   sliderElement.noUiSlider.updateOptions({
@@ -66,7 +67,7 @@ const updateSlider = () => {
   }
 };
 
-const onFormHandler = (evt) => {
+const formChangeHandler = (evt) => {
   if (!evt.target.classList.contains('effects__radio')) {
     return;
   }
@@ -74,7 +75,7 @@ const onFormHandler = (evt) => {
   updateSlider();
 };
 
-const onSliderUpdate = () => {
+const sliderElementUpdateHandler = () => {
   uploadImg.style.filter = 'none';
   uploadImg.className = '';
   effectLevel.value = '';
@@ -103,7 +104,7 @@ noUiSlider.create(sliderElement, {
 });
 updateSlider();
 
-form.addEventListener('change', onFormHandler);
-sliderElement.noUiSlider.on('update', onSliderUpdate);
+form.addEventListener('change', formChangeHandler);
+sliderElement.noUiSlider.on('update', sliderElementUpdateHandler);
 
 export { resetEffects };
