@@ -6,11 +6,11 @@ const successMessageCloseButton = successMessageTemplate.querySelector('.success
 const errorMessageCloseButton = errorMessageTemplate.querySelector('.error__button');
 
 
-const createMessageCloseHandlers = (message, closeBtn) => {
+const createMessageCloseHandlers = (message, closeButton) => {
 
   const closeMessage = () => {
     message.remove();
-    removePopupCloseHandlers(closeBtn, messageCloseClickHandler, messageCloseKeydownHandler);
+    removePopupCloseHandlers(closeButton, messageCloseClickHandler, messageCloseKeydownHandler);
     document.removeEventListener('click', fromOutsideMessageClickHandler);
 
     if (message === errorMessageTemplate) {
@@ -35,7 +35,7 @@ const createMessageCloseHandlers = (message, closeBtn) => {
     }
   }
 
-  addPopupCloseHandlers(closeBtn, messageCloseClickHandler, messageCloseKeydownHandler);
+  addPopupCloseHandlers(closeButton, messageCloseClickHandler, messageCloseKeydownHandler);
   document.addEventListener('click', fromOutsideMessageClickHandler);
 };
 

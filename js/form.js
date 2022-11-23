@@ -40,7 +40,7 @@ function closePopupClickHandler() {
 }
 
 function closePopupKeydownHandler(evt) {
-  if (evt.code === 'Escape' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+  if (evt.code === 'Escape' && !document.activeElement.matches('.text__hashtags') && document.activeElement.tagName !== 'TEXTAREA') {
     closeUploadPopup();
   }
 }
